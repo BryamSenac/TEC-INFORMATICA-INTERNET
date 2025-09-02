@@ -167,3 +167,25 @@
 // até N, chamando a função ehPrimo para cada um deles. O script
 // deve contar quantos números primos foram encontrados nesse
 // intervalo e exibir a contagem total no final.
+
+// const input = require('prompt-sync')();
+// function ehPrimo(numero){
+//     for(let i = 2; i < numero ; i++){
+//         if(numero % i == 0){
+//             return false
+//         }
+//     }
+//     return true
+// }
+// let numero = input("Digite um número: ");
+// let contagem = 0;
+// for(let i = 1; i < numero; i++){
+//     if(ehPrimo(i + 1)){
+//        contagem++; 
+//     }
+// }
+// console.log(`Existem ${contagem} número primos`)
+
+// ARROW FUNCTION OU FUNÇÃO ANÔNIMA
+// const funcao = ()=>{}
+// Fução ignorada pelo navegador no carregamento do arquivo
