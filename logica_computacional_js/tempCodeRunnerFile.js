@@ -1,1 +1,1 @@
-é IMPAR
+console.log(array);
