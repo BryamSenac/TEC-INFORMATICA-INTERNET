@@ -21,28 +21,27 @@
 // objetivo é ordenar este array do menor para o 
 // maior valor.
 
-let array = [50, 10, 1, 30, 20, 2, 5, 9, 15];
-let contaVoltas = 0;
-let contaMudanca = 0;
-for (let volta = array.length; volta > 0; volta--) {
-    for (let i = 0; i < volta; i++) {
-        if (array[i] > array[i + 1]) {
-            let varAux = array[i];
-            array[i] = array[i + 1];
-            array[i + 1] = varAux;
-            contaMudanca++;
-        }
-        contaVoltas++;
-    }
-}
-console.log(array);
-console.log(contaVoltas);
-console.log(contaMudanca);
-
+// let array = [50, 10, 1, 30, 20, 2, 5, 9, 15];
+// let contaVoltas = 0;
+// let contaMudanca = 0;
+// for (let volta = array.length; volta > 0; volta--) {
+//     for (let i = 0; i < volta; i++) {
+//         if (array[i] > array[i + 1]) {
+//             let varAux = array[i];
+//             array[i] = array[i + 1];
+//             array[i + 1] = varAux;
+//             contaMudanca++;
+//         }
+//         contaVoltas++;
+//     }
+// }
+// console.log(array);
+// console.log(contaVoltas);
+// console.log(contaMudanca);
 
 // DESAFIO 2
 // Faça um algoritmo que analise a seguinte string:
-// "Aprender programacao exige pratica e dedicacao
+// "aprender programacao exige pratica e dedicacao
 // constante". O seu objetivo é contar quantas vezes
 // cada letra aparece na frase.
 
