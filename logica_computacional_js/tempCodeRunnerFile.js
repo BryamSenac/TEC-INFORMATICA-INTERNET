@@ -1,1 +1,1 @@
-stuvwxyz";
+jogadas
