@@ -1,0 +1,13 @@
+.card-grid {
+    display: grid;
+    grid-template-columns: 300px 300px 300px 300px;
+    
+    gap: 24px;
+    padding: 24px;
+}
+
+h1 {
+    text-align: center;
+    padding: 20px;
+    font-family: sans-serif;
+}
