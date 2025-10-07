@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao NestJS!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg,rgb(175, 147, 110),rgb(181, 106, 32)); /* Gradiente mais vibrante */
+            overflow: hidden; /* Para garantir que os confetes não causem barras de rolagem */
+            position: relative; /* Necessário para posicionar os confetes */
+        }
+        .welcome-container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9); /* Fundo branco semitransparente */
+            padding: 40px 60px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Sombra mais pronunciada */
+            transform: scale(0.9); /* Começa um pouco menor */
+            animation: appear 1s ease-out forwards; /* Animação de entrada */
+        }
+        h1 {
+            color:rgb(27, 27, 27); /* Cor escura para o texto */
+            font-size: 3.5em; /* Texto maior */
+            margin-bottom: 0.5em;
+            letter-spacing: 2px; /* Espaçamento entre letras */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        p {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 0;
+        }
+
+        /* Animação para o container aparecer */
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: scale(0.7);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Estilos e animação para os confetes */
+        .confetti-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Permite interagir com elementos abaixo */
+            top: 0;
+            left: 0;
+            opacity: 0; /* Começa invisível */
+            transition: opacity 0.5s ease-in-out;
+            z-index: 100; /* Garante que os confetes fiquem por cima */
+        }
+
+        .confetti-container.active {
+            opacity: 1;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--confetti-color); /* Cor dinâmica */
+            border-radius: 50%; /* Para confetes redondos */
+            opacity: 0;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        /* Animação de queda e rotação dos confetes */
+        @keyframes confetti-fall {
+            0% {
+                opacity: 0;
+                transform: translate(0, 0) rotateZ(0deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--confetti-x), var(--confetti-y)) rotateZ(var(--confetti-rotate)) scale(0.5);
+                filter: blur(1px); /* Suavemente desfoca ao cair */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <h1>🎉 Bem-vindo(a) à API do Bryam! 🎉</h1>
+        <p>O bagulho é louco e o processo é lento.</p>
+    </div>
+
+    <div id="confetti-container" class="confetti-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const confettiContainer = document.getElementById('confetti-container');
+            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#                4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722'];
+            const numberOfConfetti = 100; // Quantidade de confetes a gerar
+
+            function createConfetti() {
+                // Posição central da tela
+                const startX = window.innerWidth / 2;
+                const startY = window.innerHeight / 2;
+
+                for (let i = 0; i < numberOfConfetti; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+
+                    // Cor aleatória
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.setProperty('--confetti-color', color);
+
+                    // Posição inicial no centro
+                    confetti.style.left = `${startX}px`;
+                    confetti.style.top = `${startY}px`;
+
+                    // Destino aleatório nas diagonais superiores
+                    const angle = Math.random() * Math.PI; // Entre 0 e PI (0 a 180 graus para as diagonais superiores)
+                    const distance = Math.random() * (window.innerHeight * 0.8) + (window.innerHeight * 0.2); // Distância da explosão
+                    
+                    const endX = startX + distance * Math.cos(angle - Math.PI / 2); // Ajusta o ângulo para as diagonais superiores
+                    const endY = startY - distance * Math.sin(angle - Math.PI / 2);
+
+                    confetti.style.setProperty('--confetti-x', `${endX - startX}px`);
+                    confetti.style.setProperty('--confetti-y', `${endY - startY}px`);
+                    confetti.style.setProperty('--confetti-rotate', `${Math.random() * 720}deg`); // Rotação aleatória
+
+                    // Tamanho aleatório para variedade
+                    const size = Math.random() * 8 + 4; // Entre 4px e 12px
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    confetti.style.borderRadius = `${Math.random() > 0.5 ? '50%' : '0%'}`; // Quadrado ou círculo
+
+                    confettiContainer.appendChild(confetti);
+
+                    // Remove o confete do DOM após a animação para otimização
+                    confetti.addEventListener('animationend', () => {
+                        confetti.remove();
+                    });
+                }
+                confettiContainer.classList.add('active'); // Ativa a opacidade do container de confetes
+            }
+
+            // Ativa os confetes após 1 segundo
+            setTimeout(createConfetti, 1000);
+        });
+    </script>
+</body>
+</html>
