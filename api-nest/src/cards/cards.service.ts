@@ -20,4 +20,9 @@ export class CardsServices {
   findInStock(): Card[] {
     return CardsBD.filter((p) => p.inStock === true);
   }
+
+  createCard(dataCard : any) : string{
+    CardsBD.push(dataCard);
+    return 'sucesso';
+  }
 }
