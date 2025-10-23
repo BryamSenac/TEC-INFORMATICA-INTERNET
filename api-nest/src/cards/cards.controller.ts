@@ -2,6 +2,7 @@
 
 import { Body, Controller, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { CardsServices } from './cards.service';
+import { CreateProductDto } from './dto/create_product_dto';
 
 @Controller('cards')
 export class CardsController {
@@ -23,7 +24,7 @@ export class CardsController {
   }
 
   @Post()
-  createCard(@Body() bodyData: any) {
+  createCard(@Body() bodyData: CreateProductDto) {
     return this.productsService.createCard(bodyData);
   }
 
