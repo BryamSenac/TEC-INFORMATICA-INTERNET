@@ -1,6 +1,6 @@
-export interface User {
-    id: number;
-    email: string;
-    password: string; // Senha com hash
-    name: string;
+export interface User{
+    id: number,
+    nome: string,
+    email: string,
+    senha: string,
 }

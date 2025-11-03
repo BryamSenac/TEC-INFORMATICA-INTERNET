@@ -1,5 +1,4 @@
 import { User } from "./user.interface";
 
-export const Users: User[] = [
-    {},
-]
+export const users: User[] = [
+];
