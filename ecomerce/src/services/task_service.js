@@ -1,71 +1,71 @@
-const API_URL = 'http://localhost:3000/products';
+const API_URL = 'http://localhost:3000/cards'; // Mudei para /tasks
 
-const productService = {
+const taskService = {
     
-    async getAllProducts() {
+    async getAllTasks() {
         try {
             const response = await fetch(API_URL);
             if (!response.ok) {
-                throw new Error('Erro ao buscar produtos.');
+                throw new Error('Erro ao buscar tarefas.');
             }
             return await response.json();
         } catch (error) {
-            console.error("Falha em getAllProducts:", error);
+            console.error("Falha em getAllTasks:", error);
             throw error;
         }
     },
 
-    async createProduct(productData) {
+    async createTask(taskData) {
         try {
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(productData),
+                body: JSON.stringify(taskData),
             });
             if (!response.ok) {
-                throw new Error('Erro ao criar produto.');
+                throw new Error('Erro ao criar tarefa.');
             }
             return await response.json();
         } catch (error) {
-            console.error("Falha em createProduct:", error);
+            console.error("Falha em createTask:", error);
             throw error;
         }
     },
 
-    async updateProduct(id, productData) {
+    async updateTask(id, taskData) {
         try {
             const response = await fetch(`${API_URL}/${id}`, {
-                method: 'PUT',
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(productData),
+                body: JSON.stringify(taskData),
             });
             if (!response.ok) {
-                throw new Error('Erro ao atualizar produto.');
+                throw new Error('Erro ao atualizar tarefa.');
             }
             return await response.json();
         } catch (error) {
-            console.error("Falha em updateProduct:", error);
+            console.error("Falha em updateTask:", error);
             throw error;
         }
     },
 
-    async deleteProduct(id) {
+    async deleteTask(id) {
         try {
             const response = await fetch(`${API_URL}/${id}`, {
                 method: 'DELETE',
             });
             if (!response.ok) {
-                throw new Error('Erro ao deletar produto.');
+                throw new Error('Erro ao deletar tarefa.');
             }
         } catch (error) {
-            console.error("Falha em deleteProduct:", error);
+            console.error("Falha em deleteTask:", error);
             throw error;
         }
     },
 };
 
-export default productService;
+export default taskService;

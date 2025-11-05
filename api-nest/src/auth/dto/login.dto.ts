@@ -7,5 +7,5 @@ export class LoginDto {
 
   @IsString()
   @IsNotEmpty({ message: 'A senha não pode estar vazia.' })
-  senha: string;
+  password: string;
 }

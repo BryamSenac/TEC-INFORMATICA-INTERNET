@@ -1,10 +1,11 @@
 import './styles/App.css'
-import CardPage from './page/CardsPage';
+import CardPage from './page/TaskPage';
+import AuthPage from './page/AuthPage';
 
 function App() {
 
   return (
-    <CardPage/>
+    <AuthPage/>
   );
 }
 

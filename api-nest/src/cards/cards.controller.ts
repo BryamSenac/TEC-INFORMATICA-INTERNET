@@ -19,8 +19,8 @@ import {
     constructor(private readonly cardsService: CardsService) {}
 
     @Post()
-    @HttpCode(HttpStatus.CREATED)
     create(@Body() createCardDto: CreateCardDto) {
+      console.log(createCardDto);
       return this.cardsService.create(createCardDto);
     }
 

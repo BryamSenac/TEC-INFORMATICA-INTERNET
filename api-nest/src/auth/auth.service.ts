@@ -8,7 +8,7 @@ import * as bcrypt from 'bcryptjs';
 export class AuthService {
   private static idCounter = 1;
 
-  async register(registerDto: RegisterDto): Promise<Omit<User, 'senha'>> {
+  async register(registerDto: RegisterDto): Promise<Omit<User, 'password'>> {
     const existingUser = users.find(
       (user) => user.email === registerDto.email,
     );
@@ -18,18 +18,18 @@ export class AuthService {
     }
 
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(registerDto.senha, salt);
+    const hashedPassword = await bcrypt.hash(registerDto.password, salt);
 
     const newUser: User = {
       id: AuthService.idCounter++,
-      nome: registerDto.nome,
+      name: registerDto.name,
       email: registerDto.email,
-      senha: hashedPassword,
+      password: hashedPassword,
     };
 
     users.push(newUser);
 
-    const { senha, ...result } = newUser;
+    const { password, ...result } = newUser;
     return result;
   }
 }

@@ -9,13 +9,13 @@ function AddCard({ handleClick }) {
     <Card
       sx={{
         width: '250px',
-        height: '320px',
+        height: '220px', // Altura ajustada para combinar com o TaskCard
         boxShadow: 'none'
       }}
     >
       <CardActionArea
-        onClick={() => {    
-          handleClick();                 
+        onClick={() => {          
+          handleClick();                  
         }}
         sx={{
           height: '100%',
