@@ -1,12 +1,19 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { RegisterDto } from './dto/register.dto';
-import { User } from './model/user.interface';
+import { LoginDto } from './dto/login.dto';
+import { User } from './model/user.interface'; 
 import { users } from './model/user.bd';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
   private static idCounter = 1;
+
+  constructor() {}
 
   async register(registerDto: RegisterDto): Promise<Omit<User, 'password'>> {
     const existingUser = users.find(
@@ -30,6 +37,26 @@ export class AuthService {
     users.push(newUser);
 
     const { password, ...result } = newUser;
+    return result;
+  }
+
+  async login(loginDto: LoginDto): Promise<Omit<User, 'password'>> {
+    const user = users.find((u) => u.email === loginDto.email);
+
+    if (!user) {
+      throw new UnauthorizedException('E-mail não encontrado');
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      loginDto.password,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('E-mail ou senha inválidos');
+    }
+
+    const { password, ...result } = user;
     return result;
   }
 }

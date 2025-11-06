@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { authService } from './../services/auth_service';
+import { useAuthContext } from './../contexts/AuthContexts';
 
 export const useAuth = () => {
-  const [isLoginMode, setIsLoginMode] = useState(true);
+  const { loginUser } = useAuthContext();
 
+  const [isLoginMode, setIsLoginMode] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
   });
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -34,16 +35,11 @@ export const useAuth = () => {
 
     try {
       if (isLoginMode) {
-        const { user, token } = await authService.login(formData);
-        console.log('Login bem-sucedido!', user, token);
-        
+        const user = await authService.login(formData);
+        loginUser(user);
       } else {
-        const { user, token } = await authService.register(formData);
-        console.log('Cadastro bem-sucedido!', user, token);
-        
-        alert('Cadastro realizado com sucesso! Faça seu login.');
-        setIsLoginMode(true); 
-        setFormData({ name: '', email: '', password: '' });
+        const user = await authService.register(formData);
+        loginUser(user);
       }
     } catch (err) {
       setError(err.message || 'Ocorreu um erro. Tente novamente.');

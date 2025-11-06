@@ -4,40 +4,57 @@ import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
-import TaskCard from '../components/TaskCard'; // Renomeado
+import TaskCard from '../components/TaskCard';
 import AddCard from '../components/AddCard';
-import TaskForm from '../components/TaskForm'; // Renomeado
-import { useTaskManager } from '../hooks/useTaskManager'; // Renomeado
+import TaskForm from '../components/TaskForm';
+import { useTaskManager } from '../hooks/useTaskManager';
+import { useAuthContext } from './../contexts/AuthContexts';
 
 function TaskPage() {
-    const { tasks, isFormOpen, editingTask, actions } = useTaskManager(); // Renomeado
+    const { tasks, isFormOpen, editingTask, actions } = useTaskManager();
+    const { user, logoutUser } = useAuthContext();
 
     return (
         <Container maxWidth="xl" sx={{ py: 3 }}>
-            <h1 style={{ textAlign: 'center', marginBottom: '32px' }}>Tarefas</h1> 
-            
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '32px'
+            }}>
+                <h1 style={{ margin: 0, fontSize: '2rem' }}>
+                    Tarefas de {user?.nome || 'Usuário'}
+                </h1>
+
+                <Button variant="outlined" color="error" onClick={logoutUser}>
+                    Sair
+                </Button>
+            </Box>
+
             <Grid container spacing={3}>
-                {tasks.map((task) => ( // Renomeado
+                {tasks.map((task) => (
                     <Grid item key={task.id} xs={12} sm={6} md={3} lg={3}>
-                        <TaskCard // Renomeado
-                            task={task} // Renomeado
-                            onEdit={() => actions.openEditForm(task)} // Renomeado
-                            onDelete={() => actions.deleteTask(task.id)} // Renomeado
+                        <TaskCard
+                            task={task}
+                            onEdit={() => actions.openEditForm(task)}
+                            onDelete={() => actions.deleteTask(task.id)}
                         />
                     </Grid>
                 ))}
                 <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <AddCard handleClick={actions.openAddForm} /> 
+                    <AddCard handleClick={actions.openAddForm} />
                 </Grid>
             </Grid>
             <Dialog open={isFormOpen} onClose={actions.closeForm}>
                 <DialogTitle>{editingTask ? 'Editar Tarefa' : 'Adicionar Nova Tarefa'}</DialogTitle>
                 <DialogContent>
-                    <TaskForm // Renomeado
+                    <TaskForm
                         onSave={actions.saveForm}
                         onCancel={actions.closeForm}
-                        initialData={editingTask} // Renomeado
+                        initialData={editingTask}
                     />
                 </DialogContent>
             </Dialog>

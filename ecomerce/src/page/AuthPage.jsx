@@ -2,9 +2,13 @@ import React from 'react';
 import './../styles/authpage.css';
 import LoginForm from './../components/auth_components/LoginForm';
 import SignUpForm from './../components/auth_components/SignUpForm';
-import { useAuth } from './../hooks/useAuth';
+import { useAuth } from './../hooks/useAuth'; 
+import { useAuthContext } from './../contexts/AuthContexts';
+import { Navigate } from 'react-router-dom';
 
 function AuthPage() {
+  const { isAuthenticated } = useAuthContext();
+
   const {
     isLoginMode,
     formData,
@@ -13,7 +17,11 @@ function AuthPage() {
     toggleMode,
     handleChange,
     handleSubmit,
-  } = useAuth();
+  } = useAuth(); 
+
+  if (isAuthenticated) {
+    return <Navigate to="/cards" replace />;
+  }
 
   const formProps = {
     formData,
