@@ -3,21 +3,21 @@ import React, { createContext, useState, useContext } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [access, setAccess] = useState(null);
 
-  const loginUser = (userData) => {
-    setUser(userData);
+  const loginUser = (access) => {
+    setAccess(access);
   };
 
   const logoutUser = () => {
-    setUser(null);
+    setAccess(null);
   };
 
   const value = {
-    user,
+    access,
     loginUser,
     logoutUser,
-    isAuthenticated: !!user,
+    isAuthenticated: !!access,
   };
 
   return (

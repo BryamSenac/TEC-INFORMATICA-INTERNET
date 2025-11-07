@@ -15,7 +15,7 @@ import { useAuthContext } from './../contexts/AuthContexts';
 
 function TaskPage() {
     const { tasks, isFormOpen, editingTask, actions } = useTaskManager();
-    const { user, logoutUser } = useAuthContext();
+    const { logoutUser } = useAuthContext();
 
     return (
         <Container maxWidth="xl" sx={{ py: 3 }}>
@@ -26,7 +26,7 @@ function TaskPage() {
                 marginBottom: '32px'
             }}>
                 <h1 style={{ margin: 0, fontSize: '2rem' }}>
-                    Tarefas de {user?.nome || 'Usuário'}
+                    Tarefas
                 </h1>
 
                 <Button variant="outlined" color="error" onClick={logoutUser}>

@@ -35,11 +35,11 @@ export const useAuth = () => {
 
     try {
       if (isLoginMode) {
-        const user = await authService.login(formData);
-        loginUser(user);
+        const access = await authService.login(formData);
+        loginUser(access);
       } else {
-        const user = await authService.register(formData);
-        loginUser(user);
+        const access = await authService.register(formData);
+        loginUser(access);
       }
     } catch (err) {
       setError(err.message || 'Ocorreu um erro. Tente novamente.');

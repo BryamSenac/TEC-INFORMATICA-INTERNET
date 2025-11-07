@@ -1,6 +1,6 @@
 const API_BASE_URL = 'http://localhost:3000/auth';
 
-const login = async ({ email, password }) => {  
+const login = async ({ email, password }) => {
   const apiPayload = {
     email,
     password,
@@ -14,22 +14,22 @@ const login = async ({ email, password }) => {
       },
       body: JSON.stringify(apiPayload),
     });
+    const data = await response.json();
 
     if (!response.ok) {
-      const errorData = await response.json();
-      
       let errorMessage = 'Erro ao fazer login.';
-      
-      if (Array.isArray(errorData.message)) {
-        errorMessage = errorData.message.join(', ');
-      } else if (errorData.message) {
-        errorMessage = errorData.message;
+      if (Array.isArray(data.message)) {
+        errorMessage = data.message.join(', ');
+      } else if (data.message) {
+        errorMessage = data.message;
       }
-
       throw new Error(errorMessage);
     }
 
-    return await response.json();
+    if (data.access_token) {
+      localStorage.setItem('authToken', data.access_token);
+    }
+    return true;
 
   } catch (error) {
     console.error('Falha no authService.login:', error);
@@ -38,33 +38,32 @@ const login = async ({ email, password }) => {
 };
 
 const register = async (userData) => {
-  const apiPayload = {
-    name: userData.name,
-    email: userData.email,
-    password: userData.password,
-  };
-
   try {
     const response = await fetch(`${API_BASE_URL}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(apiPayload),
+      body: JSON.stringify(userData),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const errorData = await response.json();
       let errorMessage = 'Erro ao registrar.';
-      if (Array.isArray(errorData.message)) {
-        errorMessage = errorData.message.join(', ');
-      } else if (errorData.message) {
-        errorMessage = errorData.message;
+      if (Array.isArray(data.message)) {
+        errorMessage = data.message.join(', ');
+      } else if (data.message) {
+        errorMessage = data.message;
       }
       throw new Error(errorMessage);
     }
 
-    return await response.json();
+    if (data.token) {
+      localStorage.setItem('authToken', data.access_token);
+    }
+
+    return true;
 
   } catch (error) {
     console.error('Falha no authService.register:', error);

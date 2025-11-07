@@ -5,17 +5,18 @@ import {
 } from '@nestjs/common';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { User } from './model/user.interface'; 
+import { User } from './model/user.interface';
 import { users } from './model/user.bd';
 import * as bcrypt from 'bcryptjs';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   private static idCounter = 1;
 
-  constructor() {}
+  constructor(private readonly jwtService: JwtService) { }
 
-  async register(registerDto: RegisterDto): Promise<Omit<User, 'password'>> {
+  async register(registerDto: RegisterDto): Promise<{ access_token: string }> {
     const existingUser = users.find(
       (user) => user.email === registerDto.email,
     );
@@ -36,11 +37,10 @@ export class AuthService {
 
     users.push(newUser);
 
-    const { password, ...result } = newUser;
-    return result;
+    return this.generateToken(newUser);
   }
 
-  async login(loginDto: LoginDto): Promise<Omit<User, 'password'>> {
+  async login(loginDto: LoginDto): Promise<{ access_token: string }> {
     const user = users.find((u) => u.email === loginDto.email);
 
     if (!user) {
@@ -56,7 +56,20 @@ export class AuthService {
       throw new UnauthorizedException('E-mail ou senha inválidos');
     }
 
-    const { password, ...result } = user;
-    return result;
+    return this.generateToken(user);
+  }
+
+  private async generateToken(user: User): Promise<{ access_token: string }> {
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      name: user.name,
+    };
+
+    const accessToken = await this.jwtService.signAsync(payload);
+
+    return {
+      access_token: accessToken,
+    };
   }
 }
