@@ -3,11 +3,15 @@ import {
   Post,
   Body,
   Res,
+  Get,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
-import type { Response } from 'express';
+import type { Response, Request } from 'express';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard'; 
 
 @Controller('auth')
 export class AuthController {
@@ -30,7 +34,6 @@ export class AuthController {
     return { message: 'Registro bem-sucedido' };
   }
 
-
   @Post('login')
   async login(
     @Res({ passthrough: true }) res: Response,
@@ -42,9 +45,26 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 1000 * 60 * 60 * 1,
+      maxAge: 1000 * 60 * 60 * 1, // 1 hora
     });
 
     return { message: 'Login bem-sucedido' };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('check-status')
+  checkAuthStatus(@Req() req: Request) {
+    return true;
+  }
+
+  @Post('logout')
+  logout(@Res({ passthrough: true }) res: Response) {
+
+    res.clearCookie('access_token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+    return { message: 'Logout bem-sucedido' };
   }
 }

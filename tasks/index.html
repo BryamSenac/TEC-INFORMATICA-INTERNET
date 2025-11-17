@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gestor de Tarefas</title>
+        
+        <link rel="stylesheet" href="./style/style.css">
+        
+        <script type="module" src="./controller/controller.js" defer></script>
+    </head>
+    <body>
+
+        <div id="login-container" class="auth-container">
+            <h2>Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Senha</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn">Entrar</button>
+            </form>
+            <a href="#" id="show-register" class="toggle-link">Não tem conta?
+                Cadastre-se</a>
+        </div>
+
+        <div id="register-container" class="auth-container hidden">
+            <h2>Cadastro</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Nome</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Senha</label>
+                    <input type="password" id="register-password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="register-role">Cargo</label>
+                    <select id="register-role" required>
+                        <option value="" disabled selected>Selecione o seu
+                            cargo</option>
+                        <option value="DEV">DEV</option>
+                        <option value="DESIGN">DESIGN</option>
+                        <option value="GERENTE">GERENTE</option>
+                        <option value="PO">PO (Product Owner)</option>
+                        <option value="MARKETING">MARKETING</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Cadastrar</button>
+            </form>
+            <a href="#" id="show-login" class="toggle-link">Já tem conta? Faça
+                login</a>
+        </div>
+    </body>
+</html>
