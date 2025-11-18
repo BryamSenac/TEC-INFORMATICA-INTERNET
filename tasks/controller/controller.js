@@ -7,9 +7,9 @@
  */
 
 import * as View from '../view/view.js';
-import * as AuthService from '../services/auth.service.js';
+// import * as AuthService from '../services/auth.service.js';
 //Arquivo de teste basta trocar os importes de serviço por esse para testar
-// import * as AuthService from '../services/test.service.js';
+import * as AuthService from '../services/test.service.js';
 
 /**
  * Guarda os dados do utilizador no sessionStorage e redireciona.
