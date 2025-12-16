@@ -6,12 +6,12 @@
 // 1. Importa o View desta tela e os Services
 import * as View from '../view/tarefas.view.js';
 // Importa o logout do serviço de autenticação
-// import { logout } from '../services/auth.service.js';
-// // Importa os serviços específicos de tarefas
-// import { getAllTasks, updateTaskStatus } from '../services/task.service.js';
+import { logout } from '../services/auth.service.js';
+// Importa os serviços específicos de tarefas
+import { getAllTasks, updateTaskStatus } from '../services/task.service.js';
 
 //Arquivo de teste basta trocar os importes de serviço por esse para testar
-import { logout, getAllTasks, updateTaskStatus } from '../services/test.service.js';
+// import { logout, getAllTasks, updateTaskStatus } from '../services/test.service.js';
 
 /**
  * Lida com o clique no botão de logout.
