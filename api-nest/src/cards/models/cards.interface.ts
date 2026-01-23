@@ -1,6 +1,6 @@
 export interface Card {
-    id: number;
-    title: string;
-    description: string;
-    status: 'To Do' | 'In Progress' | 'Done';
-  }
+  id: number;
+  title: string;
+  description: string;
+  status: string;
+}

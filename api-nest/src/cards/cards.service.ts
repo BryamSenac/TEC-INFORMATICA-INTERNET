@@ -1,29 +1,27 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Card } from './models/cards.interface';
-import { cards } from './models/cards.bd';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class CardsService {
-  private idCounter = 3;
+  constructor(private prisma: PrismaService) { }
 
-  create(createCardDto: CreateCardDto): Card {
-    const newCard: Card = {
-      id: this.idCounter++,
-      ...createCardDto,
-    };
-
-    cards.push(newCard);
-    return newCard;
+  async create(createCardDto: CreateCardDto): Promise<Card> {
+    return this.prisma.card.create({
+      data: createCardDto,
+    });
   }
 
-  findAll(): Card[] {
-    return cards;
+  async findAll(): Promise<Card[]> {
+    return this.prisma.card.findMany();
   }
 
-  findOne(id: number): Card {
-    const card = cards.find((c) => c.id === id);
+  async findOne(id: number): Promise<Card> {
+    const card = await this.prisma.card.findUnique({
+      where: { id },
+    });
 
     if (!card) {
       throw new NotFoundException(`Card com o ID #${id} não encontrado`);
@@ -32,23 +30,20 @@ export class CardsService {
     return card;
   }
 
-  update(id: number, updateCardDto: UpdateCardDto): Card {
-    const card = this.findOne(id);
-    const cardIndex = cards.findIndex((c) => c.id === id);
+  async update(id: number, updateCardDto: UpdateCardDto): Promise<Card> {
+    await this.findOne(id); // Ensure exists
 
-    const updatedCard = {
-      ...card,
-      ...updateCardDto
-    };
-
-    cards[cardIndex] = updatedCard;
-
-    return updatedCard;
+    return this.prisma.card.update({
+      where: { id },
+      data: updateCardDto,
+    });
   }
 
-  remove(id: number): void {
-    this.findOne(id); 
-    const cardIndex = cards.findIndex((c) => c.id === id);
-    cards.splice(cardIndex, 1);
+  async remove(id: number): Promise<void> {
+    await this.findOne(id); // Ensure exists
+
+    await this.prisma.card.delete({
+      where: { id },
+    });
   }
 }
