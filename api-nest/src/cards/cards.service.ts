@@ -9,8 +9,10 @@ export class CardsService {
   constructor(private prisma: PrismaService) { }
 
   async create(createCardDto: CreateCardDto): Promise<Card> {
-    return this.prisma.card.create({
-      data: createCardDto,
+    return this.prisma.$transaction(async (tx) => {
+      return tx.card.create({
+        data: createCardDto,
+      });
     });
   }
 
@@ -31,19 +33,31 @@ export class CardsService {
   }
 
   async update(id: number, updateCardDto: UpdateCardDto): Promise<Card> {
-    await this.findOne(id); // Ensure exists
+    return this.prisma.$transaction(async (tx) => {
+      const card = await tx.card.findUnique({ where: { id } });
 
-    return this.prisma.card.update({
-      where: { id },
-      data: updateCardDto,
+      if (!card) {
+        throw new NotFoundException(`Card com o ID #${id} não encontrado`);
+      }
+
+      return tx.card.update({
+        where: { id },
+        data: updateCardDto,
+      });
     });
   }
 
   async remove(id: number): Promise<void> {
-    await this.findOne(id); // Ensure exists
+    await this.prisma.$transaction(async (tx) => {
+      const card = await tx.card.findUnique({ where: { id } });
 
-    await this.prisma.card.delete({
-      where: { id },
+      if (!card) {
+        throw new NotFoundException(`Card com o ID #${id} não encontrado`);
+      }
+
+      await tx.card.delete({
+        where: { id },
+      });
     });
   }
 }
