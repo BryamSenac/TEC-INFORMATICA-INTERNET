@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { authService } from './../services/auth_service';
-import { useAuthContext } from './../contexts/AuthContexts';
 
 export const useAuth = () => {
-  const { loginUser } = useAuthContext();
-
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
@@ -13,11 +10,13 @@ export const useAuth = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
   const toggleMode = () => {
     setIsLoginMode((prevMode) => !prevMode);
     setFormData({ name: '', email: '', password: '' });
     setError('');
+    setMessage('');
   };
 
   const handleChange = (e) => {
@@ -31,15 +30,17 @@ export const useAuth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setMessage('');
     setLoading(true);
 
     try {
       if (isLoginMode) {
-        const access = await authService.login(formData);
-        loginUser(access);
+        await authService.login(formData);
       } else {
-        const access = await authService.register(formData);
-        loginUser(access);
+        const { session } = await authService.register(formData);
+        if (!session) {
+          setMessage('Cadastro realizado com sucesso! Verifique seu email para confirmar a conta.');
+        }
       }
     } catch (err) {
       setError(err.message || 'Ocorreu um erro. Tente novamente.');
@@ -53,6 +54,7 @@ export const useAuth = () => {
     formData,
     loading,
     error,
+    message,
     toggleMode,
     handleChange,
     handleSubmit,

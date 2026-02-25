@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envio para Activepieces</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="background-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <main class="container">
+        <div class="glass-panel">
+            <div class="header">
+                <h2>Crie sua História</h2>
+                <p>Diga sobre o que você quer a história e nossa automação a escreverá para você.</p>
+            </div>
+
+            <form id="activepieces-form">
+                <!-- Story Topic -->
+                <div class="form-group">
+                    <label for="story-topic">Sobre o que será a história?</label>
+                    <div class="input-wrapper text-area-wrapper">
+                        <i data-lucide="book-open" class="input-icon align-top"></i>
+                        <textarea id="story-topic" rows="4"
+                            placeholder="Ex: A jornada de um astronauta solitário que encontra vida em outro sistema solar..."
+                            required></textarea>
+                    </div>
+                </div>
+
+                <!-- Alert Message -->
+                <div id="alert-message" class="alert hidden"></div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    <span class="btn-text">Enviar para Automação</span>
+                    <i data-lucide="send" class="btn-icon"></i>
+                    <div class="spinner hidden"></div>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

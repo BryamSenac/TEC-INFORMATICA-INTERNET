@@ -1,35 +1,35 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import { authService } from './auth_service';
+import { createContext, useState, useContext, useEffect } from 'react';
+import { authService } from './../services/auth_service';
+import { supabase } from './../services/supabaseClient';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const verifyUser = async () => {
-      try {
-        await authService.checkAuthStatus();
-        setIsAuthenticated(true);
-      } catch (error) {
-        setIsAuthenticated(false);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    // Check active session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAuthenticated(!!session);
+      setIsLoading(false);
+    });
 
-    verifyUser();
+    // Listen for changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const loginUser = async (email, password) => {
     try {
       await authService.login({ email, password });
-      setIsAuthenticated(true); 
+      // State update handled by onAuthStateChange
     } catch (error) {
       console.error("Erro no loginUser (Context):", error);
-      setIsAuthenticated(false);
       throw error;
     }
   };
@@ -37,13 +37,12 @@ export const AuthProvider = ({ children }) => {
   const logoutUser = async () => {
     try {
       await authService.logout();
+      // State update handled by onAuthStateChange
     } catch (error) {
       console.error("Erro no logoutUser (Context):", error);
-    } finally {
-      setIsAuthenticated(false);
     }
   };
-  
+
   const value = {
     isAuthenticated,
     loginUser,

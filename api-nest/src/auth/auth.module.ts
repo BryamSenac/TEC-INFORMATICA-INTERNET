@@ -7,15 +7,16 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt' }), 
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: 'SEU_SEGREDO_SUPER_SECRETO_E_LONGO_123456', 
-      signOptions: { 
+      secret: 'SEU_SEGREDO_SUPER_SECRETO_E_LONGO_123456',
+      signOptions: {
         expiresIn: '1h',
       },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService,JwtStrategy],
+  providers: [AuthService, JwtStrategy],
+  exports: [JwtModule],
 })
-export class AuthModule {}
+export class AuthModule { }
